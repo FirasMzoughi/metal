@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSearchParams} from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 const MeasurementPage: React.FC = () => {
   const [width, setWidth] = useState<number>(1);
   const [length, setLength] = useState<number>(0);
-   const searchParams = useSearchParams();
-    const deviceName = searchParams.get("name") || "Unknown Device";
-    const deviceImage = searchParams.get("image");
+  const searchParams = useSearchParams();
+  const deviceName = searchParams.get("name") || "Unknown Device";
+  const deviceImage = searchParams.get("image");
 
   // Increase or decrease width and length
   const increaseWidth = () => setWidth((prev) => Math.min(prev + 1, 10));
@@ -34,12 +34,12 @@ const MeasurementPage: React.FC = () => {
           <div className="bg-black p-4 rounded">
             <div className="flex items-center justify-center h-12">
               <Image
-                          src={deviceImage || "/placeholder-image.png"}
-                          alt={deviceName}
-                          className="rounded-lg shadow-lg mb-6"
-                          width={300}
-                          height={300}
-                         className="h-10" />
+                src={deviceImage || "/placeholder-image.png"}
+                alt={deviceName}
+                className="rounded-lg shadow-lg mb-6 h-10"
+                width={300}
+                height={300}
+              />
             </div>
             <p className="text-center text-lg font-bold mt-2">T44</p>
             <p className="text-center text-sm">Search Coil Detected</p>
@@ -52,9 +52,7 @@ const MeasurementPage: React.FC = () => {
           {Array.from({ length: 10 }, (_, i) => (
             <div
               key={i}
-              className={`h-6 w-6 rounded ${
-                i < 7 ? "bg-green-500" : "bg-gray-700"
-              }`}
+              className={`h-6 w-6 rounded ${i < 7 ? "bg-green-500" : "bg-gray-700"}`}
             />
           ))}
         </div>
@@ -69,12 +67,14 @@ const MeasurementPage: React.FC = () => {
               <button
                 className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
                 onClick={decreaseWidth}
+                aria-label="Decrease width"
               >
                 -
               </button>
               <button
                 className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
                 onClick={increaseWidth}
+                aria-label="Increase width"
               >
                 +
               </button>
@@ -89,12 +89,14 @@ const MeasurementPage: React.FC = () => {
               <button
                 className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
                 onClick={decreaseLength}
+                aria-label="Decrease length"
               >
                 -
               </button>
               <button
                 className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
                 onClick={increaseLength}
+                aria-label="Increase length"
               >
                 +
               </button>
@@ -103,7 +105,7 @@ const MeasurementPage: React.FC = () => {
 
           {/* How to Measure */}
           <div className="bg-black p-4 rounded text-center">
-            <p className="font-bold text-lg">entrer</p>
+            <p className="font-bold text-lg">Enter Dimensions</p>
             <div className="flex items-center justify-center mt-4">
               <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black text-2xl font-bold">
                 ?
@@ -117,8 +119,6 @@ const MeasurementPage: React.FC = () => {
           Measure the dimensions of the target signal. Enter the dimensions by
           using - or + and press "OK".
         </p>
-
-      
       </div>
     </div>
   );
