@@ -115,10 +115,8 @@ const MeasurementPage: React.FC = () => {
         </div>
 
         {/* Instructions */}
-        <p className="text-center text-sm mt-4">
-          Measure the dimensions of the target signal. Enter the dimensions by
-          using - or + and press "OK".
-        </p>
+        <p className="text-center text-sm mt-4">Measure the dimensions of the target signal. Enter the dimensions by using - or + and press &quot;OK&quot;.</p>
+
       </div>
     </div>
   );
