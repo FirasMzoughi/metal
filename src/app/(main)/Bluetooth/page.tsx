@@ -5,13 +5,25 @@ import { useRouter } from "next/navigation"; // Import useRouter for navigation
 import Image from "next/image";
 import p3 from "@/assets/p3.png";
 
-
 const BluetoothPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [deviceName, setDeviceName] = useState("");
+  const [isBluetoothAvailable, setIsBluetoothAvailable] = useState(false); // Track Bluetooth support
   const router = useRouter(); // Initialize router
 
+  // Check if Bluetooth is available on client side
+  useEffect(() => {
+    if (typeof navigator !== "undefined" && "bluetooth" in navigator) {
+      setIsBluetoothAvailable(true); // Bluetooth is available in this browser
+    }
+  }, []);
+
   const connectBluetooth = async () => {
+    if (!isBluetoothAvailable) {
+      console.error("Bluetooth is not supported in this environment.");
+      return;
+    }
+
     try {
       const device = await navigator.bluetooth.requestDevice({
         acceptAllDevices: true,
@@ -74,6 +86,12 @@ const BluetoothPage = () => {
           TRY AGAIN
         </button>
       </div>
+      {/* Display message if Bluetooth is not supported */}
+      {!isBluetoothAvailable && (
+        <p className="text-red-500 text-xl mt-4">
+          Bluetooth is not supported in this environment.
+        </p>
+      )}
     </div>
   );
 };
