@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import p1 from "@/assets/p1.jpg"; // Reusing the image from the previous code
 
 const MeasurementPage: React.FC = () => {
   const [width, setWidth] = useState<number>(1);
@@ -23,12 +24,27 @@ const MeasurementPage: React.FC = () => {
   const decreaseLength = () => setLength((prev) => Math.max(prev - 1, 0));
 
   return (
-    <div className="min-h-screen bg-blue-900 flex items-center justify-center text-white font-sans">
-      <div className="bg-blue-800 rounded-lg shadow-lg p-6 w-full max-w-xl space-y-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black flex items-center justify-center text-white font-sans">
+      <div className="bg-gray-900 rounded-lg shadow-lg p-6 w-full max-w-xl space-y-6">
+        {/* Header Section */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-bold">{deviceName}</h1>
+            <p className="text-sm text-gray-400">Dimensions Measurement</p>
+          </div>
+          <Image
+            src={deviceImage || p1}
+            alt={deviceName}
+            className="rounded-lg shadow-lg"
+            width={80}
+            height={80}
+          />
+        </div>
+
         {/* Battery and Coil Section */}
         <div className="grid grid-cols-2 gap-4">
           {/* Battery Section */}
-          <div className="bg-black p-4 rounded">
+          <div className="bg-gray-800 p-4 rounded-lg text-center">
             <div className="w-full h-12 bg-green-500 rounded-lg overflow-hidden relative">
               <div className="absolute top-0 left-0 bg-yellow-500 h-full" style={{ width: "25%" }} />
             </div>
@@ -36,19 +52,9 @@ const MeasurementPage: React.FC = () => {
           </div>
 
           {/* Coil Section */}
-          <div className="bg-black p-4 rounded">
-            <div className="flex items-center justify-center h-12">
-              <Image
-                src={deviceImage || "/placeholder-image.png"}
-                alt={deviceName}
-                className="rounded-lg shadow-lg mb-6 h-10"
-                width={300}
-                height={300}
-              />
-            </div>
-            <p className="text-center text-lg font-bold mt-2">T44</p>
-            <p className="text-center text-sm">Search Coil Detected</p>
-            <p className="text-center text-sm">36 x 44 cm</p>
+          <div className="bg-gray-800 p-4 rounded-lg text-center">
+            <p className="text-lg font-bold">Search Coil</p>
+            <p className="text-sm text-gray-400">36 x 44 cm</p>
           </div>
         </div>
 
@@ -65,7 +71,7 @@ const MeasurementPage: React.FC = () => {
         {/* Measurement Section */}
         <div className="grid grid-cols-3 gap-4">
           {/* Width Control */}
-          <div className="bg-black p-4 rounded text-center">
+          <div className="bg-gray-800 p-4 rounded-lg text-center">
             <p className="font-bold text-lg">Width</p>
             <p className="text-xl">{width}</p>
             <div className="mt-2 flex justify-center space-x-2">
@@ -87,7 +93,7 @@ const MeasurementPage: React.FC = () => {
           </div>
 
           {/* Length Control */}
-          <div className="bg-black p-4 rounded text-center">
+          <div className="bg-gray-800 p-4 rounded-lg text-center">
             <p className="font-bold text-lg">Length</p>
             <p className="text-xl">{length}</p>
             <div className="mt-2 flex justify-center space-x-2">
@@ -108,9 +114,9 @@ const MeasurementPage: React.FC = () => {
             </div>
           </div>
 
-          {/* How to Measure */}
-          <div className="bg-black p-4 rounded text-center">
-            <p className="font-bold text-lg">Enter Dimensions</p>
+          {/* Instructions */}
+          <div className="bg-gray-800 p-4 rounded-lg text-center">
+            <p className="font-bold text-lg">Instructions</p>
             <div className="flex items-center justify-center mt-4">
               <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black text-2xl font-bold">
                 ?
@@ -119,9 +125,9 @@ const MeasurementPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Instructions */}
-        <p className="text-center text-sm mt-4">
-          Measure the dimensions of the target signal. Enter the dimensions by using - or + and press &quot;OK&quot;.
+        {/* Footer Instructions */}
+        <p className="text-center text-sm text-gray-400">
+          Use the -/+ buttons to adjust the dimensions. Ensure accurate measurements.
         </p>
       </div>
     </div>
