@@ -1,41 +1,33 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // For navigation
 import Image from "next/image";
 import p3 from "@/assets/p3.png";
 
 const BluetoothPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [deviceName, setDeviceName] = useState("");
-  const [isBluetoothAvailable, setIsBluetoothAvailable] = useState(false);
-  const [isMobileUnsupported, setIsMobileUnsupported] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const router = useRouter();
+  const [isBluetoothAvailable, setIsBluetoothAvailable] = useState(false); // Track Bluetooth support
+  const [errorMessage, setErrorMessage] = useState(""); // Track errors
+  const router = useRouter(); // Initialize router
 
+  // Check Bluetooth availability
   useEffect(() => {
-    if (typeof navigator !== "undefined" && "bluetooth" in navigator) {
+    if (navigator?.bluetooth) {
       setIsBluetoothAvailable(true);
     } else {
-      const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
-      const vendor = typeof navigator !== "undefined" ? navigator.vendor : "";
-      const isOpera = typeof window !== "undefined" && "opera" in window;
-  
-      if (/iPhone|iPad|iPod|Android/i.test(userAgent) || /Opera/i.test(vendor) || isOpera) {
-        setIsMobileUnsupported(true);
-      }
+      setErrorMessage("Bluetooth is not supported in this environment.");
     }
   }, []);
-  
 
-  const connectBluetooth = () => {
+  const connectBluetooth = async () => {
     if (!isBluetoothAvailable) {
-      console.error("Bluetooth is not supported in this environment.");
+      setErrorMessage("Bluetooth is not supported on this device or browser.");
       return;
     }
 
-    setIsConnecting(true);
-
+    setErrorMessage(""); // Clear any previous error messages
     setTimeout(async () => {
       try {
         const device = await navigator.bluetooth.requestDevice({
@@ -44,22 +36,22 @@ const BluetoothPage = () => {
         setDeviceName(device.name || "Unknown Device");
         setIsConnected(true);
       } catch (error) {
-        console.error("Bluetooth connection failed:", error);
+        setErrorMessage("Failed to connect to Bluetooth device. Please try again.");
         setIsConnected(false);
-      } finally {
-        setIsConnecting(false);
       }
-    }, 3000);
+    }, 3000); // Add 3-second delay
   };
 
   const disconnectBluetooth = () => {
     setIsConnected(false);
     setDeviceName("");
+    setErrorMessage("");
   };
 
+  // Redirect after connection
   useEffect(() => {
     if (isConnected) {
-      router.push("/selected");
+      router.push("/selected"); // Replace with your actual route
     }
   }, [isConnected, router]);
 
@@ -69,7 +61,7 @@ const BluetoothPage = () => {
       <div className="flex items-center space-x-8">
         <div className="p-4 rounded-full shadow-lg">
           <Image
-            src={p3}
+            src={p3} // Ensure this is the correct path in your public folder
             alt="Bluetooth Icon"
             className="w-16 h-16"
             width={500}
@@ -84,9 +76,6 @@ const BluetoothPage = () => {
         ) : (
           <div className="text-center">
             <p className="text-xl text-red-500 font-bold">Not Connected</p>
-            {isConnecting && (
-              <p className="text-white">Attempting to connect...</p>
-            )}
           </div>
         )}
       </div>
@@ -100,20 +89,14 @@ const BluetoothPage = () => {
         <button
           onClick={connectBluetooth}
           className="px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow hover:bg-green-600"
-          disabled={isConnecting}
         >
-          {isConnecting ? "Connecting..." : "TRY AGAIN"}
+          TRY AGAIN
         </button>
       </div>
-      {!isBluetoothAvailable && !isMobileUnsupported && (
+      {/* Display error message */}
+      {errorMessage && (
         <p className="text-red-500 text-xl mt-4">
-          Bluetooth is not supported in this environment.
-        </p>
-      )}
-      {isMobileUnsupported && (
-        <p className="text-red-500 text-xl mt-4">
-          Web Bluetooth is not supported on most mobile devices. Please use a
-          compatible browser on desktop.
+          {errorMessage}
         </p>
       )}
     </div>
