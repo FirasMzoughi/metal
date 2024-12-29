@@ -57,7 +57,7 @@ const BluetoothPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-black">
-      <h1 className="text-4xl font-bold text-white mb-8">Connecting the Device</h1>
+      <h1 className="text-4xl font-bold text-white mb-8">Connecting the Device2</h1>
       <div className="flex items-center space-x-8">
         <div className="p-4 rounded-full shadow-lg">
           <Image
