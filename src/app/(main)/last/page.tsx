@@ -1,15 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 const MeasurementPage: React.FC = () => {
   const [width, setWidth] = useState<number>(1);
   const [length, setLength] = useState<number>(0);
-  const searchParams = useSearchParams();
-  const deviceName = searchParams.get("name") || "Unknown Device";
-  const deviceImage = searchParams.get("image");
+  const [deviceName, setDeviceName] = useState<string>("Unknown Device");
+  const [deviceImage, setDeviceImage] = useState<string | null>(null);
+
+  // Extract query parameters on component mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setDeviceName(params.get("name") || "Unknown Device");
+    setDeviceImage(params.get("image"));
+  }, []);
 
   // Increase or decrease width and length
   const increaseWidth = () => setWidth((prev) => Math.min(prev + 1, 10));
@@ -115,8 +120,9 @@ const MeasurementPage: React.FC = () => {
         </div>
 
         {/* Instructions */}
-        <p className="text-center text-sm mt-4">Measure the dimensions of the target signal. Enter the dimensions by using - or + and press &quot;OK&quot;.</p>
-
+        <p className="text-center text-sm mt-4">
+          Measure the dimensions of the target signal. Enter the dimensions by using - or + and press &quot;OK&quot;.
+        </p>
       </div>
     </div>
   );
