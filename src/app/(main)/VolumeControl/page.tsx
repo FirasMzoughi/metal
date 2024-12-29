@@ -1,4 +1,4 @@
-"use client";
+"use client"; // تحديد أن هذا المكون يعتمد على العميل
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ const ControlPanel: React.FC = () => {
   const [deviceName, setDeviceName] = useState<string>("Unknown Device");
   const [deviceImage, setDeviceImage] = useState<string | null>(null);
 
-  const searchParams = useSearchParams(); // استدعاء الـ Hook دائمًا في الأعلى
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ControlPanel: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black p-4">
       <div className="flex flex-col items-center bg-gray-900 text-white p-4 rounded-lg shadow-lg space-y-6 w-full max-w-sm sm:max-w-md">
         <div className="grid grid-cols-2 gap-4 w-full text-center sm:grid-cols-1">
-          {[
+          {[ 
             { label: "VOLUME", value: volume },
             { label: "LIGHT", value: light },
             { label: "SENSITIVITY", value: sensitivity },
@@ -88,14 +88,10 @@ const ControlPanel: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 w-full text-center sm:grid-cols-1">
-          {[
+          {[ 
             { label: "Volume", onIncrease: increaseVolume, onDecrease: decreaseVolume },
             { label: "Light", onIncrease: increaseLight, onDecrease: decreaseLight },
-            {
-              label: "Sensitivity",
-              onIncrease: increaseSensitivity,
-              onDecrease: decreaseSensitivity,
-            },
+            { label: "Sensitivity", onIncrease: increaseSensitivity, onDecrease: decreaseSensitivity },
           ].map(({ label, onIncrease, onDecrease }) => (
             <div key={label} className="flex justify-center space-x-2">
               <button
