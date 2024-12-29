@@ -1,23 +1,32 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import p3 from "@/assets/p3.png";
 
 const BluetoothPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [deviceName, setDeviceName] = useState("");
-  const [isBluetoothAvailable, setIsBluetoothAvailable] = useState(false); // Track Bluetooth support
-  const [isConnecting, setIsConnecting] = useState(false); // Track connection status
-  const router = useRouter(); // Initialize router
+  const [isBluetoothAvailable, setIsBluetoothAvailable] = useState(false);
+  const [isMobileUnsupported, setIsMobileUnsupported] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const router = useRouter();
 
-  // Check if Bluetooth is available on client side
   useEffect(() => {
     if (typeof navigator !== "undefined" && "bluetooth" in navigator) {
-      setIsBluetoothAvailable(true); // Bluetooth is available in this browser
+      setIsBluetoothAvailable(true);
+    } else {
+      const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+      const vendor = typeof navigator !== "undefined" ? navigator.vendor : "";
+      const isOpera = typeof window !== "undefined" && "opera" in window;
+  
+      if (/iPhone|iPad|iPod|Android/i.test(userAgent) || /Opera/i.test(vendor) || isOpera) {
+        setIsMobileUnsupported(true);
+      }
     }
   }, []);
+  
 
   const connectBluetooth = () => {
     if (!isBluetoothAvailable) {
@@ -25,9 +34,8 @@ const BluetoothPage = () => {
       return;
     }
 
-    setIsConnecting(true); // Indicate the connection is in progress
+    setIsConnecting(true);
 
-    // Add a delay of 3 seconds before connecting
     setTimeout(async () => {
       try {
         const device = await navigator.bluetooth.requestDevice({
@@ -39,7 +47,7 @@ const BluetoothPage = () => {
         console.error("Bluetooth connection failed:", error);
         setIsConnected(false);
       } finally {
-        setIsConnecting(false); // Reset connecting state
+        setIsConnecting(false);
       }
     }, 3000);
   };
@@ -49,10 +57,9 @@ const BluetoothPage = () => {
     setDeviceName("");
   };
 
-  // Redirect when connected
   useEffect(() => {
     if (isConnected) {
-      router.push("/selected"); // Replace "/selected" with your target route
+      router.push("/selected");
     }
   }, [isConnected, router]);
 
@@ -62,7 +69,7 @@ const BluetoothPage = () => {
       <div className="flex items-center space-x-8">
         <div className="p-4 rounded-full shadow-lg">
           <Image
-            src={p3} // Ensure this is the correct path in your public folder
+            src={p3}
             alt="Bluetooth Icon"
             className="w-16 h-16"
             width={500}
@@ -93,15 +100,20 @@ const BluetoothPage = () => {
         <button
           onClick={connectBluetooth}
           className="px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow hover:bg-green-600"
-          disabled={isConnecting} // Disable button while connecting
+          disabled={isConnecting}
         >
           {isConnecting ? "Connecting..." : "TRY AGAIN"}
         </button>
       </div>
-      {/* Display message if Bluetooth is not supported */}
-      {!isBluetoothAvailable && (
+      {!isBluetoothAvailable && !isMobileUnsupported && (
         <p className="text-red-500 text-xl mt-4">
           Bluetooth is not supported in this environment.
+        </p>
+      )}
+      {isMobileUnsupported && (
+        <p className="text-red-500 text-xl mt-4">
+          Web Bluetooth is not supported on most mobile devices. Please use a
+          compatible browser on desktop.
         </p>
       )}
     </div>
