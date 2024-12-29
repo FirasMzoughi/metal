@@ -9,6 +9,7 @@ const BluetoothPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [deviceName, setDeviceName] = useState("");
   const [isBluetoothAvailable, setIsBluetoothAvailable] = useState(false); // Track Bluetooth support
+  const [isConnecting, setIsConnecting] = useState(false); // Track connection status
   const router = useRouter(); // Initialize router
 
   // Check if Bluetooth is available on client side
@@ -18,22 +19,29 @@ const BluetoothPage = () => {
     }
   }, []);
 
-  const connectBluetooth = async () => {
+  const connectBluetooth = () => {
     if (!isBluetoothAvailable) {
       console.error("Bluetooth is not supported in this environment.");
       return;
     }
 
-    try {
-      const device = await navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
-      });
-      setDeviceName(device.name || "Unknown Device");
-      setIsConnected(true);
-    } catch (error) {
-      console.error("Bluetooth connection failed:", error);
-      setIsConnected(false);
-    }
+    setIsConnecting(true); // Indicate the connection is in progress
+
+    // Add a delay of 3 seconds before connecting
+    setTimeout(async () => {
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+        });
+        setDeviceName(device.name || "Unknown Device");
+        setIsConnected(true);
+      } catch (error) {
+        console.error("Bluetooth connection failed:", error);
+        setIsConnected(false);
+      } finally {
+        setIsConnecting(false); // Reset connecting state
+      }
+    }, 3000);
   };
 
   const disconnectBluetooth = () => {
@@ -69,6 +77,9 @@ const BluetoothPage = () => {
         ) : (
           <div className="text-center">
             <p className="text-xl text-red-500 font-bold">Not Connected</p>
+            {isConnecting && (
+              <p className="text-white">Attempting to connect...</p>
+            )}
           </div>
         )}
       </div>
@@ -82,8 +93,9 @@ const BluetoothPage = () => {
         <button
           onClick={connectBluetooth}
           className="px-4 py-2 bg-green-500 text-black font-bold rounded-lg shadow hover:bg-green-600"
+          disabled={isConnecting} // Disable button while connecting
         >
-          TRY AGAIN
+          {isConnecting ? "Connecting..." : "TRY AGAIN"}
         </button>
       </div>
       {/* Display message if Bluetooth is not supported */}
