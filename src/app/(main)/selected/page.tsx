@@ -27,7 +27,7 @@ const DeviceSelector = () => {
 
   const handleNavigate = () => {
     
-    router.push(`/VolumeControl`);
+    router.push(`/last`);
   };
 
   const currentDevice = devices[selectedDeviceIndex];
