@@ -3,10 +3,12 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Image from "next/image";
+import p1 from "@/assets/p1.jpg";
+import p2 from "@/assets/p2.jpg";
 
 const devices = [
-  { name: "T40", id: 1, image: "/p1.jpg" }, // Ensure the path matches your public folder structure
-  { name: "T100", id: 2, image: "/p2.jpg" },
+  { name: "T40", id: 1, image: p1 }, // Ensure the path matches your public folder structure
+  { name: "T100", id: 2, image: p2 },
 ];
 
 const DeviceSelector = () => {
