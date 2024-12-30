@@ -7,17 +7,20 @@ import p3 from "@/assets/p3.png";
 
 const BluetoothPage = () => {
   const [status, setStatus] = useState("Scanning for devices...");
-  const [fakeDevices, setFakeDevices] = useState(["Device A"]);
-  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [fakeDevices] = useState(["Device A"]); // Removed `setFakeDevices`
+ 
+  const [selectedDevice, setSelectedDevice] = useState<string | null>(null);
+
   const router = useRouter(); // Initialize router
 
-  const handleDeviceSelect = (device) => {
+  const handleDeviceSelect = (device: string) => {
     setSelectedDevice(device);
     setStatus(`Connecting to ${device}...`);
     setTimeout(() => {
       setStatus(`Connected to ${device}`);
     }, 2000); // Simulate connection delay
   };
+  
 
   const navigateToSelected = () => {
     router.push("/selected"); // Redirect to /selected
