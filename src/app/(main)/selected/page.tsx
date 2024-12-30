@@ -26,12 +26,8 @@ const DeviceSelector = () => {
   };
 
   const handleNavigate = () => {
-    const currentDevice = devices[selectedDeviceIndex];
-    const query = new URLSearchParams({
-      name: currentDevice.name,
-      image: currentDevice.image,
-    }).toString();
-    router.push(`/VolumeControl?${query}`);
+    
+    router.push(`/VolumeControl`);
   };
 
   const currentDevice = devices[selectedDeviceIndex];
