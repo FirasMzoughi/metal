@@ -24,11 +24,11 @@ const MeasurementPage: React.FC = () => {
   const decreaseLength = () => setLength((prev) => Math.max(prev - 1, 0));
 
   const addLine = () => {
-    setLines((prev) => Math.min(prev + 1, 20));
+    setLines((prev) => Math.min(prev + 2, 20));
   };
 
   const removeLine = () => {
-    setLines((prev) => Math.max(prev - 1, 0));
+    setLines((prev) => Math.max(prev - 2, 0));
   };
 
   return (
