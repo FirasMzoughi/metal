@@ -1,18 +1,24 @@
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Next.js navigation
 
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image"; // Import Image component for optimized image handling in Next.js
+import p1 from "@/assets/en.png";
+import p2 from "@/assets/ger.png";
+import p3 from "@/assets/ru.png";
+
+// Define the languages array with proper paths for images in the assets folder
 const languages = [
-  { name: "English", code: "en" },
-  { name: "French", code: "fr" },
-  { name: "Arabic", code: "ar" },
-  { name: "Spanish", code: "es" },
+  { name: "English", code: "en", flag: p1 },
+  { name: "German", code: "de", flag: p2},
+  { name: "Russian", code: "ru", flag: p3 },
 ];
 
 const LanguageSelector = () => {
   const [currentLanguageIndex, setCurrentLanguageIndex] = useState(0);
-  const router = useRouter(); // Initialize Next.js router
+  const router = useRouter();
 
+  // Handlers for changing the current language
   const handleNextLanguage = () => {
     setCurrentLanguageIndex((currentLanguageIndex + 1) % languages.length);
   };
@@ -24,36 +30,46 @@ const LanguageSelector = () => {
   };
 
   const handleNavigate = () => {
-    router.push("/Bluetooth"); // Navigate to /Bluetooth
+    router.push("/Bluetooth");
   };
 
   const currentLanguage = languages[currentLanguageIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900">
-      <h1 className="text-4xl font-bold text-gray-100 mb-8">
-        Select Your Language
-      </h1>
-      <div className="flex items-center space-x-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+      
+      <div className="flex items-center gap-4">
+        {/* Previous Language Button */}
         <button
-          className="w-12 h-12 text-gray-900 bg-gray-200 hover:bg-gray-300 active:scale-90 transition transform rounded-full shadow-lg flex items-center justify-center text-2xl"
           onClick={handlePreviousLanguage}
-          aria-label="Previous Language"
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-white text-black shadow-md hover:bg-gray-300 transition"
         >
-          &lt;
+          «
         </button>
+
+        {/* Current Language Display */}
         <div
-          className="text-3xl font-medium text-gray-100 bg-gray-800 px-8 py-4 rounded-lg shadow-md cursor-pointer"
           onClick={handleNavigate}
+          className="bg-[#8B4513] rounded-xl p-6 flex flex-col items-center shadow-lg cursor-pointer hover:scale-105 transition transform"
         >
-          {currentLanguage.name}
+          <Image
+            src={currentLanguage.flag}
+            alt={`${currentLanguage.name} Flag`}
+            width={96}
+            height={96}
+            className="rounded-full mb-4"
+          />
+          <p className="text-xl font-semibold uppercase">
+            {currentLanguage.name}
+          </p>
         </div>
+
+        {/* Next Language Button */}
         <button
-          className="w-12 h-12 text-gray-900 bg-gray-200 hover:bg-gray-300 active:scale-90 transition transform rounded-full shadow-lg flex items-center justify-center text-2xl"
           onClick={handleNextLanguage}
-          aria-label="Next Language"
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-white text-black shadow-md hover:bg-gray-300 transition"
         >
-          &gt;
+          »
         </button>
       </div>
     </div>
